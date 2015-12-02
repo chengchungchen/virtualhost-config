@@ -1,6 +1,6 @@
 # This configure is to hidden visit by IP
 server {
-        listen 80 default;
-        #return 500;
-        rewrite ^(.*) http://xtv.yam.com permanent;
+    listen 80 default;
+    #return 500;
+    rewrite ^(.*) http://web.ccchen.com permanent;
 }
