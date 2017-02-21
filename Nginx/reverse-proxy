@@ -1,0 +1,35 @@
+upstream web {
+    #ip_hash;
+    server 192.168.13.49:80 weight=3;
+    server 192.168.13.57:80 weight=3;
+    server 192.168.13.181:80 weight=1;
+    server 192.168.13.194:80 weight=3;
+}
+
+
+server {
+    listen 80 default_server;
+    server_name web.ccchen.com;
+
+    access_log /var/log/nginx/reverse-proxy_access.log;
+    error_log /var/log/nginx/reverse-proxy_error.log;
+
+    location / {
+        #proxy_cache nginx-cache;
+        #proxy_cache_revalidate on;
+        #proxy_cache_min_uses 3;
+        #proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
+
+        #proxy_cache_lock on;
+        #proxy_cache_valid 200 302 12h;
+        #proxy_cache_valid 301 1h;
+        #proxy_cache_valid any 1m;
+
+        proxy_set_header        Host            $host;
+        proxy_set_header        X-Real-IP       $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass_header       Set-Cookie;
+        #proxy_pass_request_header off;
+        proxy_pass http://web/;
+    }
+}
